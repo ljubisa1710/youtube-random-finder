@@ -1,0 +1,17 @@
+How to Run
+==========
+
+1. Install dependencies (first time or after deleting `node_modules`):
+   npm install
+
+2. Add your YouTube API key to `.env`:
+   VITE_YOUTUBE_API_KEY=your_api_key_here
+
+3. Start the dev server:
+   npm run dev
+   # open the URL printed in the terminal
+
+Optional
+--------
+- Build for production: npm run build
+- Preview the production build: npm run preview
