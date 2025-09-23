@@ -69,7 +69,7 @@ const LegalNotice = ({ onClose }) => {
           </li>
         </ul>
         <p>
-          Questions or concerns? No you don't.
+          Have any questions or concerns? No you don't.
         </p>
       </section>
     </div>
