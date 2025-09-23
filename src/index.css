@@ -28,6 +28,8 @@
   --chip-bg: rgba(255, 255, 255, 0.05);
   --chip-hover-bg: rgba(255, 255, 255, 0.12);
   --radio-checked-color: #ffffff;
+  --card-bg: rgba(0, 0, 0, 0.35);
+  --link-color: #64b5ff;
   --select-bg: rgba(0, 0, 0, 0.35);
   --select-border: rgba(255, 255, 255, 0.25);
   --select-focus-border: rgba(255, 255, 255, 0.45);
@@ -65,6 +67,8 @@
   --chip-bg: rgba(31, 32, 35, 0.08);
   --chip-hover-bg: rgba(31, 32, 35, 0.16);
   --radio-checked-color: #1f2023;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --link-color: #1f5bbf;
   --select-bg: rgba(255, 255, 255, 0.85);
   --select-border: rgba(31, 32, 35, 0.12);
   --select-focus-border: rgba(31, 32, 35, 0.4);
@@ -372,6 +376,45 @@ h1 {
   transform: translateY(-1px);
 }
 
+.legal-notice {
+  margin: 2rem auto 3rem;
+  width: min(100%, 720px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--muted-strong-text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.legal-notice h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color);
+}
+
+.legal-notice a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.legal-notice ul {
+  margin: 0.75rem 0 1rem 1.2rem;
+  padding: 0;
+  list-style: disc;
+}
+
+.legal-notice li + li {
+  margin-top: 0.5rem;
+}
+
+.legal-notice p {
+  margin: 0 0 0.75rem 0;
+}
+
 .clear-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -403,12 +446,6 @@ h1 {
   .app {
     padding: 2rem 1.5rem;
     gap: 1rem;
-  }
-
-  .filters {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
   }
 
   .theme-toggle {

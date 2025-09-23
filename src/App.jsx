@@ -5,6 +5,7 @@ import ChannelSearch from "./components/ChannelSearch.jsx";
 import HistorySelector from "./components/HistorySelector.jsx";
 import ActionBar from "./components/ActionBar.jsx";
 import VideoPlayer from "./components/VideoPlayer.jsx";
+import LegalNotice from "./components/LegalNotice.jsx";
 import { useTheme } from "./hooks/useTheme.js";
 import { useChannelVideoPool } from "./hooks/useChannelVideoPool.js";
 import { useGlobalVideoPool } from "./hooks/useGlobalVideoPool.js";
@@ -214,6 +215,8 @@ function App() {
       {error && <p className="error-text">{error}</p>}
 
       <VideoPlayer videoId={videoId} />
+
+      <LegalNotice />
     </div>
   );
 }
