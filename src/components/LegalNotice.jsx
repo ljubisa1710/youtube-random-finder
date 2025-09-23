@@ -69,9 +69,7 @@ const LegalNotice = ({ onClose }) => {
           </li>
         </ul>
         <p>
-          Questions or concerns? Contact the developer at
-          {' '}
-          <a href="mailto:privacy@youtuberandomfinder.app">privacy@youtuberandomfinder.app</a>.
+          Questions or concerns? No you don't.
         </p>
       </section>
     </div>
