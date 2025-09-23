@@ -37,6 +37,7 @@ function App() {
   const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const [historyOption, setHistoryOption] = useState(HISTORY_OPTIONS[0].value);
   const [playedVideos, setPlayedVideos] = useState([]);
+  const [showLegalNotice, setShowLegalNotice] = useState(false);
 
   useEffect(() => {
     const term = searchTerm.trim();
@@ -216,7 +217,19 @@ function App() {
 
       <VideoPlayer videoId={videoId} />
 
-      <LegalNotice />
+      <button
+        type="button"
+        className="legal-trigger"
+        onClick={() => setShowLegalNotice(true)}
+      >
+        Privacy &amp; Terms
+      </button>
+
+      <p className="legal-caption">
+        Using this app means you agree to the YouTube Terms of Service and our privacy practices.
+      </p>
+
+      {showLegalNotice && <LegalNotice onClose={() => setShowLegalNotice(false)} />}
     </div>
   );
 }

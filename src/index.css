@@ -376,42 +376,98 @@ h1 {
   transform: translateY(-1px);
 }
 
-.legal-notice {
-  margin: 2rem auto 3rem;
-  width: min(100%, 720px);
+.legal-trigger {
+  margin-top: 1rem;
+  border: none;
+  background: transparent;
+  color: var(--link-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.legal-trigger:hover {
+  color: var(--text-color);
+}
+
+.legal-caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted-text);
+}
+
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
   padding: 1.5rem;
+}
+
+.legal-modal {
+  width: min(100%, 720px);
+  max-height: 80vh;
+  overflow-y: auto;
   border-radius: 16px;
   background: var(--card-bg);
   color: var(--muted-strong-text);
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
 }
 
-.legal-notice h2 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
+.legal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.legal-modal-header h2 {
+  margin: 0;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-color);
 }
 
-.legal-notice a {
+.legal-close {
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.legal-close:hover {
+  transform: scale(1.1);
+}
+
+.legal-modal a {
   color: var(--link-color);
   text-decoration: underline;
 }
 
-.legal-notice ul {
-  margin: 0.75rem 0 1rem 1.2rem;
+.legal-modal ul {
+  margin: 0.75rem 0 1rem 1.25rem;
   padding: 0;
   list-style: disc;
 }
 
-.legal-notice li + li {
+.legal-modal li + li {
   margin-top: 0.5rem;
 }
 
-.legal-notice p {
+.legal-modal p {
   margin: 0 0 0.75rem 0;
 }
 
