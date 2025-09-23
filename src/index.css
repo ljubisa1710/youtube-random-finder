@@ -268,24 +268,6 @@ h1 {
   color: var(--muted-text);
 }
 
-.filters {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0.5rem 0;
-}
-
-.location-options,
-.category-options {
-  width: min(100%, 320px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .history-options {
   width: 100%;
   display: flex;
@@ -294,9 +276,7 @@ h1 {
   gap: 0.5rem;
 }
 
-.history-label,
-.location-label,
-.category-label {
+.history-label {
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -348,32 +328,6 @@ h1 {
   gap: 0.75rem;
   margin-top: 1rem;
   flex-wrap: wrap;
-}
-
-.location-select,
-.category-select {
-  width: min(100%, 340px);
-  padding: 0.6rem 0.9rem;
-  border-radius: 12px;
-  border: 1px solid var(--select-border);
-  background: var(--select-bg);
-  color: var(--text-color);
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.location-select:focus,
-.category-select:focus {
-  outline: none;
-  border-color: var(--select-focus-border);
-  box-shadow: var(--select-focus-shadow);
-}
-
-.location-select:disabled,
-.category-select:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 .fetch-button {

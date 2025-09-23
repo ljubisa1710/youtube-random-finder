@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  CATEGORY_OPTIONS,
-  HISTORY_OPTIONS,
-  LOCATION_OPTIONS,
-} from "./constants/options.js";
+import { HISTORY_OPTIONS } from "./constants/options.js";
 import AppHeader from "./components/AppHeader.jsx";
 import ChannelSearch from "./components/ChannelSearch.jsx";
-import FilterControls from "./components/FilterControls.jsx";
 import HistorySelector from "./components/HistorySelector.jsx";
 import ActionBar from "./components/ActionBar.jsx";
 import VideoPlayer from "./components/VideoPlayer.jsx";
@@ -17,9 +12,7 @@ import { useGlobalVideoPool } from "./hooks/useGlobalVideoPool.js";
 const pickUniqueVideo = (pool, playedVideos, setPlayedVideos, setError) => {
   const available = pool.filter(id => !playedVideos.includes(id));
   if (available.length === 0) {
-    setError(
-      "You've already seen every video in this set. Clear history or adjust your filters to keep exploring."
-    );
+    setError("You've already seen every video in this set. Clear history to keep exploring.");
     return null;
   }
 
@@ -42,8 +35,6 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const [historyOption, setHistoryOption] = useState(HISTORY_OPTIONS[0].value);
-  const [locationOption, setLocationOption] = useState(LOCATION_OPTIONS[0].value);
-  const [categoryOption, setCategoryOption] = useState(CATEGORY_OPTIONS[0].value);
   const [playedVideos, setPlayedVideos] = useState([]);
 
   useEffect(() => {
@@ -125,24 +116,6 @@ function App() {
     setVideoId("");
   };
 
-  const handleLocationChange = (event) => {
-    const value = event.target.value;
-    setLocationOption(value);
-    resetGlobalPool();
-    if (!selectedChannelId) {
-      setVideoId("");
-    }
-  };
-
-  const handleCategoryChange = (event) => {
-    const value = event.target.value;
-    setCategoryOption(value);
-    resetGlobalPool();
-    if (!selectedChannelId) {
-      setVideoId("");
-    }
-  };
-
   const handleInputKeyDown = (event) => {
     if (event.key === "Enter" && suggestions.length > 0) {
       event.preventDefault();
@@ -157,8 +130,6 @@ function App() {
     setSuggestions([]);
     setVideoId("");
     setHistoryOption(HISTORY_OPTIONS[0].value);
-    setCategoryOption(CATEGORY_OPTIONS[0].value);
-    setLocationOption(LOCATION_OPTIONS[0].value);
     setPlayedVideos([]);
     setError("");
     resetChannelPool();
@@ -180,7 +151,7 @@ function App() {
       setError("");
 
       try {
-        const pool = await ensureGlobalVideoPool(locationOption, categoryOption);
+        const pool = await ensureGlobalVideoPool();
         const uniqueVideoId = pickUniqueVideo(pool, playedVideos, setPlayedVideos, setError);
         if (!uniqueVideoId) {
           return;
@@ -227,20 +198,8 @@ function App() {
         onSuggestionSelect={handleSuggestionSelect}
       />
 
-      <FilterControls
-        locationOption={locationOption}
-        categoryOption={categoryOption}
-        onLocationChange={handleLocationChange}
-        onCategoryChange={handleCategoryChange}
-        locations={LOCATION_OPTIONS}
-        categories={CATEGORY_OPTIONS}
-        disabled={loading}
-      />
-
       <p className="search-hint">
         Leave the search blank to grab a random trending video.
-        <br />
-        The location and category filters adjust what we sample when no channel is selected.
       </p>
 
       <HistorySelector
