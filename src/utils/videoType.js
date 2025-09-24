@@ -1,4 +1,4 @@
-const SHORT_VIDEO_MAX_SECONDS = 90;
+const SHORT_VIDEO_MAX_SECONDS = 60 * 3; // 3 minutes
 
 const parseIsoDurationSeconds = (duration) => {
   if (!duration || typeof duration !== "string") {
