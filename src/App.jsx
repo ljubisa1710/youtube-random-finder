@@ -9,6 +9,7 @@ import LegalNotice from "./components/LegalNotice.jsx";
 import { useTheme } from "./hooks/useTheme.js";
 import { useChannelVideoPool } from "./hooks/useChannelVideoPool.js";
 import { useGlobalVideoPool } from "./hooks/useGlobalVideoPool.js";
+import VideoTypeSelector from "./components/VideoTypeSelector.jsx";
 import { VIDEO_FILTER_TYPES } from "./utils/videoType.js";
 
 const MATCHERS = {
@@ -55,10 +56,11 @@ function App() {
   const [showLegalNotice, setShowLegalNotice] = useState(false);
   const [filterType, setFilterType] = useState(VIDEO_FILTER_TYPES.videos);
 
-  const toggleFilterType = () => {
-    setFilterType(prev =>
-      prev === VIDEO_FILTER_TYPES.videos ? VIDEO_FILTER_TYPES.shorts : VIDEO_FILTER_TYPES.videos
-    );
+  const handleFilterChange = (nextFilter) => {
+    if (nextFilter === filterType) {
+      return;
+    }
+    setFilterType(nextFilter);
     setPlayedVideos([]);
     setVideoId("");
     setError("");
@@ -226,12 +228,7 @@ function App() {
 
   return (
     <div className="app">
-      <AppHeader
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        filterType={filterType}
-        onToggleFilter={toggleFilterType}
-      />
+      <AppHeader theme={theme} onToggleTheme={toggleTheme} />
 
       <ChannelSearch
         searchTerm={searchTerm}
@@ -251,6 +248,12 @@ function App() {
         options={HISTORY_OPTIONS}
         onChange={handleHistoryChange}
         disabled={loading || !selectedChannelId}
+      />
+
+      <VideoTypeSelector
+        value={filterType}
+        onChange={handleFilterChange}
+        disabled={loading}
       />
 
       <ActionBar onFetch={fetchRandomVideo} onClear={handleClearAll} loading={loading} />
