@@ -28,6 +28,8 @@
   --chip-bg: rgba(255, 255, 255, 0.05);
   --chip-hover-bg: rgba(255, 255, 255, 0.12);
   --radio-checked-color: #ffffff;
+  --card-bg: rgba(0, 0, 0, 0.35);
+  --link-color: #64b5ff;
   --select-bg: rgba(0, 0, 0, 0.35);
   --select-border: rgba(255, 255, 255, 0.25);
   --select-focus-border: rgba(255, 255, 255, 0.45);
@@ -65,6 +67,8 @@
   --chip-bg: rgba(31, 32, 35, 0.08);
   --chip-hover-bg: rgba(31, 32, 35, 0.16);
   --radio-checked-color: #1f2023;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --link-color: #1f5bbf;
   --select-bg: rgba(255, 255, 255, 0.85);
   --select-border: rgba(31, 32, 35, 0.12);
   --select-focus-border: rgba(31, 32, 35, 0.4);
@@ -188,6 +192,49 @@ h1 {
   gap: 0.5rem;
 }
 
+.video-type-selector {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--toggle-border);
+  background: var(--toggle-bg);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.video-type-button {
+  padding: 0.35rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.video-type-button:hover:not(:disabled) {
+  background: var(--toggle-hover-bg);
+  transform: translateY(-1px);
+}
+
+.video-type-button.is-active {
+  background: var(--text-color);
+  color: var(--background-color);
+}
+
+.video-type-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.video-type-button:focus-visible {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+}
+
 .suggestions-panel {
   position: absolute;
   top: calc(100% + 0.25rem);
@@ -268,24 +315,6 @@ h1 {
   color: var(--muted-text);
 }
 
-.filters {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0.5rem 0;
-}
-
-.location-options,
-.category-options {
-  width: min(100%, 320px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .history-options {
   width: 100%;
   display: flex;
@@ -294,9 +323,7 @@ h1 {
   gap: 0.5rem;
 }
 
-.history-label,
-.location-label,
-.category-label {
+.history-label {
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -350,32 +377,6 @@ h1 {
   flex-wrap: wrap;
 }
 
-.location-select,
-.category-select {
-  width: min(100%, 340px);
-  padding: 0.6rem 0.9rem;
-  border-radius: 12px;
-  border: 1px solid var(--select-border);
-  background: var(--select-bg);
-  color: var(--text-color);
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.location-select:focus,
-.category-select:focus {
-  outline: none;
-  border-color: var(--select-focus-border);
-  box-shadow: var(--select-focus-shadow);
-}
-
-.location-select:disabled,
-.category-select:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .fetch-button {
   padding: 0.75rem 2rem;
   border-radius: 999px;
@@ -418,6 +419,101 @@ h1 {
   transform: translateY(-1px);
 }
 
+.legal-trigger {
+  margin-top: 1rem;
+  border: none;
+  background: transparent;
+  color: var(--link-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.legal-trigger:hover {
+  color: var(--text-color);
+}
+
+.legal-caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted-text);
+}
+
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.legal-modal {
+  width: min(100%, 720px);
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--muted-strong-text);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.legal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.legal-modal-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color);
+}
+
+.legal-close {
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.legal-close:hover {
+  transform: scale(1.1);
+}
+
+.legal-modal a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.legal-modal ul {
+  margin: 0.75rem 0 1rem 1.25rem;
+  padding: 0;
+  list-style: disc;
+}
+
+.legal-modal li + li {
+  margin-top: 0.5rem;
+}
+
+.legal-modal p {
+  margin: 0 0 0.75rem 0;
+}
+
 .clear-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -449,12 +545,6 @@ h1 {
   .app {
     padding: 2rem 1.5rem;
     gap: 1rem;
-  }
-
-  .filters {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
   }
 
   .theme-toggle {
