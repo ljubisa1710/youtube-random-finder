@@ -9,17 +9,32 @@ import LegalNotice from "./components/LegalNotice.jsx";
 import { useTheme } from "./hooks/useTheme.js";
 import { useChannelVideoPool } from "./hooks/useChannelVideoPool.js";
 import { useGlobalVideoPool } from "./hooks/useGlobalVideoPool.js";
+import { VIDEO_FILTER_TYPES } from "./utils/videoType.js";
 
-const pickUniqueVideo = (pool, playedVideos, setPlayedVideos, setError) => {
-  const available = pool.filter(id => !playedVideos.includes(id));
-  if (available.length === 0) {
-    setError("You've already seen every video in this set. Clear history to keep exploring.");
+const MATCHERS = {
+  [VIDEO_FILTER_TYPES.all]: () => true,
+  [VIDEO_FILTER_TYPES.videos]: (item) => !item.isShort,
+  [VIDEO_FILTER_TYPES.shorts]: (item) => item.isShort,
+};
+
+const pickUniqueVideo = (pool, playedVideos, setPlayedVideos, setError, filterType) => {
+  const matcher = MATCHERS[filterType] || MATCHERS[VIDEO_FILTER_TYPES.all];
+  const filteredPool = pool.filter(matcher);
+
+  if (filteredPool.length === 0) {
+    setError("No videos match this filter. Try switching the filter or clearing history.");
     return null;
   }
 
-  const randomVideoId = available[Math.floor(Math.random() * available.length)];
-  setPlayedVideos(prev => [...prev, randomVideoId]);
-  return randomVideoId;
+  const available = filteredPool.filter(item => !playedVideos.includes(item.id));
+  if (available.length === 0) {
+    setError("You've already seen every video in this filter. Clear history to keep exploring.");
+    return null;
+  }
+
+  const randomVideo = available[Math.floor(Math.random() * available.length)];
+  setPlayedVideos(prev => [...prev, randomVideo.id]);
+  return randomVideo.id;
 };
 
 function App() {
@@ -38,6 +53,16 @@ function App() {
   const [historyOption, setHistoryOption] = useState(HISTORY_OPTIONS[0].value);
   const [playedVideos, setPlayedVideos] = useState([]);
   const [showLegalNotice, setShowLegalNotice] = useState(false);
+  const [filterType, setFilterType] = useState(VIDEO_FILTER_TYPES.videos);
+
+  const toggleFilterType = () => {
+    setFilterType(prev =>
+      prev === VIDEO_FILTER_TYPES.videos ? VIDEO_FILTER_TYPES.shorts : VIDEO_FILTER_TYPES.videos
+    );
+    setPlayedVideos([]);
+    setVideoId("");
+    setError("");
+  };
 
   useEffect(() => {
     const term = searchTerm.trim();
@@ -154,7 +179,13 @@ function App() {
 
       try {
         const pool = await ensureGlobalVideoPool();
-        const uniqueVideoId = pickUniqueVideo(pool, playedVideos, setPlayedVideos, setError);
+        const uniqueVideoId = pickUniqueVideo(
+          pool,
+          playedVideos,
+          setPlayedVideos,
+          setError,
+          filterType
+        );
         if (!uniqueVideoId) {
           return;
         }
@@ -174,7 +205,13 @@ function App() {
 
     try {
       const pool = await ensureVideoPool(selectedChannelId, historyOption);
-      const uniqueVideoId = pickUniqueVideo(pool, playedVideos, setPlayedVideos, setError);
+      const uniqueVideoId = pickUniqueVideo(
+        pool,
+        playedVideos,
+        setPlayedVideos,
+        setError,
+        filterType
+      );
       if (!uniqueVideoId) {
         return;
       }
@@ -189,7 +226,12 @@ function App() {
 
   return (
     <div className="app">
-      <AppHeader theme={theme} onToggleTheme={toggleTheme} />
+      <AppHeader
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        filterType={filterType}
+        onToggleFilter={toggleFilterType}
+      />
 
       <ChannelSearch
         searchTerm={searchTerm}

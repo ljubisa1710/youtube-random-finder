@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { GLOBAL_MAX_PER_REGION, GLOBAL_EXTRA_PAGES_PRIMARY } from "../constants/options.js";
+import { getVideoType } from "../utils/videoType.js";
 
 const createInitialState = () => ({
   videos: [],
@@ -22,13 +23,14 @@ export const useGlobalVideoPool = () => {
       throw new Error("Missing YouTube API key.");
     }
 
-    const collected = new Set();
+    const collected = [];
+    const seen = new Set();
     let nextPageToken = "";
     let pagesFetched = 0;
 
     do {
       const tokenParam = nextPageToken ? `&pageToken=${nextPageToken}` : "";
-      const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=${GLOBAL_MAX_PER_REGION}&key=${apiKey}${tokenParam}`;
+      const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&maxResults=${GLOBAL_MAX_PER_REGION}&key=${apiKey}${tokenParam}`;
       const res = await fetch(url);
 
       let data;
@@ -43,27 +45,33 @@ export const useGlobalVideoPool = () => {
         throw new Error(errorMessage);
       }
 
-      const ids = (data.items || [])
-        .map(item => item.id)
-        .filter(Boolean);
+      const items = (data.items || [])
+        .map(item => {
+          const { isShort } = getVideoType(item.contentDetails?.duration);
+          return { id: item.id, isShort };
+        })
+        .filter(item => Boolean(item.id));
 
-      ids.forEach(id => collected.add(id));
+      for (const item of items) {
+        if (!seen.has(item.id)) {
+          seen.add(item.id);
+          collected.push(item);
+        }
+      }
 
       nextPageToken = data.nextPageToken || "";
       pagesFetched += 1;
     } while (nextPageToken && pagesFetched < GLOBAL_EXTRA_PAGES_PRIMARY);
 
-    const ids = Array.from(collected);
-
-    if (ids.length === 0) {
+    if (collected.length === 0) {
       throw new Error("No videos found right now, please try again.");
     }
 
     setState({
-      videos: ids,
+      videos: collected,
     });
 
-    return ids;
+    return collected;
   }, [state]);
 
   return { ensureGlobalVideoPool, resetCache };
